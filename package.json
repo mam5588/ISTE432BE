@@ -1,0 +1,23 @@
+{
+  "name": "iste432be",
+  "version": "1.0.0",
+  "description": "API for Audiocracy Website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mam5588/ISTE432BE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mam5588/ISTE432BE/issues"
+  },
+  "homepage": "https://github.com/mam5588/ISTE432BE#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
