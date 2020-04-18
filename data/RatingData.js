@@ -11,17 +11,18 @@ module.exports = {
     getAverageRating(playlistID){
         
         return new Promise(function(resolve, reject){
-        let conn = DBConn.getConnection();
-        conn.connect(function(err){
-            if(err) reject(err);
-
-            let sql = "SELECT AVG(rating) AS rating FROM rating WHERE playlistID = ?;";
-            conn.query(sql, [playlistID], function(err, result){
+            let conn = DBConn.getConnection();
+            conn.connect(function(err){
                 if(err) reject(err);
-                console.log("Data layer: " + result[0].rating);
-    
-                conn.end();
-                resolve(result);
+
+                let sql = "SELECT AVG(rating) AS rating FROM rating WHERE playlistID = ?;";
+                conn.query(sql, [playlistID], function(err, result){
+                    if(err) reject(err);
+                    console.log("Data layer: " + result[0].rating);
+        
+                    conn.end();
+                    resolve(result);
+                });
             });
         });
     },

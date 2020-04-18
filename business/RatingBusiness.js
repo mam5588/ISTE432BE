@@ -10,20 +10,22 @@ module.exports = {
     //Parameter validation      
     //TODO check that playlist exists when sybsystem is implemented
 
-    ratingData.getAverageRating(playlistID)
-    .then(function(results){
-      let average = results;
-      console.log("Business layer value: " + average);
+    return new Promise(function(resolve, reject){
+        ratingData.getAverageRating(playlistID)
+        .then(function(results){
+          let average = results;
+          console.log("Business layer value: " + average);
 
-      if(average == null){
-        return [404, "No ratings exist for this playlist."];
-      }
-  
-      return [200, average];
-    })
-    .catch(function(err){
-      return [500, err.message];
-    })
+          if(average == null){
+            return [404, "No ratings exist for this playlist."];
+          }
+      
+          return [200, average];
+        })
+        .catch(function(err){
+          return [500, err.message];
+        })
+    });
   },
 
   /**
