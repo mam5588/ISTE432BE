@@ -17,7 +17,9 @@
   },
   "homepage": "https://github.com/mam5588/ISTE432BE#readme",
   "dependencies": {
+    "assert": "^2.0.0",
     "express": "^4.17.1",
+    "jest": "^25.3.0",
     "mysql": "^2.18.1"
   }
 }
