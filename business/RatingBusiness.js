@@ -18,13 +18,13 @@ module.exports = {
         console.log("Business layer value: " + average);
 
         if(average == null){
-          return [404, "No ratings exist for this playlist."];
+          resolve( [404, "No ratings exist for this playlist."]);
         }
     
-        return [200, average];
+        resolve( [200, average]);
       })
       .catch(function(err){
-        return [500, err.message];
+        resolve([500, err.message]);
       })
     });
     
