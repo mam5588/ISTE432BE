@@ -14,7 +14,7 @@ module.exports = {
 
       ratingData.getAverageRating(playlistID)
       .then(function(results){
-        let average = results;
+        let average = results[0].rating;
         console.log("Business layer value: " + average);
 
         if(average == null){
@@ -63,13 +63,13 @@ module.exports = {
         
       //Data validation
       if(rating == null){
-        return [404, "This person does not have a rating for this playlist."]
+        resolve([404, "This person does not have a rating for this playlist."]);
       }
 
-      return [200, rating];
+      resolve([200, rating]);
     }
     catch(err){
-      return [500, "Sorry, we could not service your request at this time."]
+      resolve([500, "Sorry, we could not service your request at this time."]);
     }
   },
 
