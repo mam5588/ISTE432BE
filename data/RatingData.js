@@ -1,4 +1,4 @@
-const DbConn = require('./DbConn.js');
+const DbConn = require('./DBConn.js');
 const Rating = require('../util/Rating.js');
 
 module.exports = {
@@ -9,6 +9,14 @@ module.exports = {
      * @param {String} playlistID ID of playlist to sort by
      */
     getAverageRating(playlistID){
+        let conn = DbConn.getConnection();
+        conn.connect();
+        let results = conn.query("SELECT rating FROM rating WHERE personID = 'reviewer1ID' AND playlistID = 'adminPlaylist1ID';");
+                
+        console.log("results: ",results);  //Here I got result
+        return results;
+
+        /*
         let dbConn = new DbConn();
 
         let sql = "SELECT AVG(rating) AS rating FROM rating WHERE playlistID = ?;";
@@ -23,6 +31,7 @@ module.exports = {
             .finally(function(){
                 dbConn.close();
             });
+            */
     },
 
     /**
