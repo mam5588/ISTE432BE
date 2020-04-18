@@ -3,25 +3,10 @@ const assert = require("assert");
 
 
 function testConnect(){
-    let conn = new DBConn();
-
-
-    conn.query("DESCRIBE person")
-        .then(result => {
-            if (err) console.log("testConnection failed: Connect invalid");
-            assert(conn.state == 'authenticated', "testConnection failed: Connect invalid");
-        })
-        .catch(function(){
-            console.log('testConnect failed: error in connection.');
-        })
-        .finally(function(){
-            try{
-                conn.close();
-            }
-            catch(err){
-                console.log('testClose failed: error in closing connection.');
-            }
-        });
+    let conn = DBConn.getConnection();
+    conn.connect(function(){
+        assert(conn.state == 'connected', "TestConnect failed: failed to connect to the datatbase");
+    });
 }
 
 function testQuery(){

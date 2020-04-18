@@ -11,13 +11,18 @@ const ratingBusiness = require('../business/RatingBusiness.js');
  * Get the average rating of a playlist
  */
 router.get('/rating/average', (req, res) => {
+    let responseInfo = ratingBusiness.getAverageRating(req.query.playlistID);
+    
+    res.statusCode = responseInfo[0];
+    res.json(responseInfo[1]);
+    
+    /*
     let conn = DBConn.getConnection();
     conn.connect();
     conn.query("SELECT AVG(rating) AS rating FROM rating WHERE playlistID = 'adminPlaylist1ID';", function (error, results, fields) {
        if (error) throw error;
        res.send(JSON.stringify(results));
      });
-    /*
     let responseInfo = ratingBusiness.getAverageRating(
         req.query.playlistID
     );
