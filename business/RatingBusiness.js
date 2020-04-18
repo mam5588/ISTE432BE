@@ -7,6 +7,7 @@ module.exports = {
    * @param {String} playlistID ID of playlist to search by
    */
   getAverageRating(playlistID){
+<<<<<<< Updated upstream
     try{
       //Parameter validation      
       //TODO check that playlist exists when sybsystem is implemented
@@ -24,6 +25,28 @@ module.exports = {
       return [500, err.message];
       //return [500, "Sorry, we could not service your request at this time."]
     }
+=======
+
+    return new Promise(function(resolve, reject){
+      //Parameter validation      
+      //TODO check that playlist exists when sybsystem is implemented
+
+      ratingData.getAverageRating(playlistID)
+      .then(function(results){
+        let average = results;
+        console.log("Business layer value: " + average);
+
+        if(average == null){
+          return [404, "No ratings exist for this playlist."];
+        }
+    
+        return [200, average];
+      })
+      .catch(function(err){
+        return [500, err.message];
+      })
+    });
+>>>>>>> Stashed changes
   },
 
   /**
