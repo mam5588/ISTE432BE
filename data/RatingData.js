@@ -1,4 +1,4 @@
-const DbConn = require('./DbConn.js');
+const DBConn = require('./DBConn.js');
 const Rating = require('../util/Rating.js');
 
 module.exports = {
@@ -9,22 +9,6 @@ module.exports = {
      * @param {String} playlistID ID of playlist to sort by
      */
     getAverageRating(playlistID){
-<<<<<<< Updated upstream
-        let dbConn = new DbConn();
-
-        let sql = "SELECT AVG(rating) AS rating FROM rating WHERE playlistID = ?;";
-        dbConn.query(sql, [playlistID])
-            .then(result => {
-                console.log("Data layer: " + result[0].rating);
-                return result[0].rating
-            })
-            .catch(err => {
-                throw err;
-            })
-            .finally(function(){
-                dbConn.close();
-=======
-        
         return new Promise(function(resolve, reject){
             let conn = DBConn.getConnection();
             conn.connect(function(err){
@@ -38,8 +22,8 @@ module.exports = {
                     conn.end();
                     resolve(result);
                 });
->>>>>>> Stashed changes
             });
+        });
     },
 
     /**
