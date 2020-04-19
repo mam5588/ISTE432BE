@@ -75,8 +75,8 @@ var addRating = function(personID, playlistID, rating){
 
     //Further business logic
     getRating(personID, playlistID)
-    .then(function(rating){
-      if(rating[0] == 200){
+    .then(function(response){
+      if(response[0] == 200){
         resolve([409, "This user has already submitted a rating for this playlist"]);
       }
       //TODO check that playlist exists when sybsystem is implemented
