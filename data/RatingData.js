@@ -12,17 +12,17 @@ module.exports = {
         return new Promise(function(resolve, reject){
 
             let rating = null;
-            let sql = "SELECT AVG(rating) AS rating, playlistID, createdDate, lastUpdatedDate FROM rating WHERE playlistID = ?;";
-            DBConn.query(sql, [playlistID])
+            let query = "SELECT AVG(rating) AS rating, playlistID, createdDate, lastUpdatedDate FROM rating WHERE playlistID = ?;";
+            DBConn.query(query, [playlistID])
             .then(function(result){
-                if(rating != null){
+                if(result[0].rating != null){
                     result = result[0];
                     rating = new Rating(result.rating, null, result.playlistID, result.createdDate, result.lastUpdatedDate);
                 }
                 resolve(rating);
             })
             .catch(function(err){
-                throw err;
+                reject(err);
             });
         });
     },
@@ -37,8 +37,8 @@ module.exports = {
         return new Promise(function(resolve, reject){
 
             let rating = null;
-            let sql = "SELECT * FROM rating WHERE playlistID = ? AND personID = ?;";
-            DBConn.query(sql, [playlistID, personID])
+            let query = "SELECT * FROM rating WHERE playlistID = ? AND personID = ?;";
+            DBConn.query(query, [playlistID, personID])
             .then(function(result){
                 if(result.length != 0){
                     result = result[0];
@@ -47,7 +47,7 @@ module.exports = {
                 resolve(rating);
             })
             .catch(function(err){
-                throw err;
+                reject(err);
             });
         });
     },
@@ -58,30 +58,35 @@ module.exports = {
      * @param {String} playlistID ID of playlist rating is for 
      * @param {int} rating Rating value to insert
      */
-    addRating(personID, playlistID, rating){
-        let query = "INSERT INTO rating (personID, playlistID, rating) " + 
-                    "VALUES ("+ personID + "," + playlistID + "," + rating + ");";
-        let conn = new sql.Request();
-        conn.query(sql, function(err, result){
-            if (err) throw err;
-            console.log("1 rating inserted");
+    addRating(personID, playlistID, rating, createdDate, lastUpdatedDate){
+        return new Promise(function(resolve, reject){
+            let query = "INSERT INTO rating (personID, playlistID, rating, createdDate, lastUpdatedDate) VALUES (?, ?, ?, ?, ?);";
+            
+            DBConn.query(query, [personID, playlistID, rating, createdDate, lastUpdatedDate])
+            .then(function(result){
+                resolve(result.affectedRows);
+            })
+            .catch(function(err){
+                reject(err);
+            });
         });
-
-        return 1;
     },
 
     /**
      * Deletes an existing rating by ID
      * @param {int} ratingID ID of rating to remove
      */
-    deleteRating(ratingID){
-        let query = "DELETE FROM rating " + 
-                        "WHERE ratingID = " + ratingID + ";";
-        let conn = new sql.Request();
-        conn.query(sql, function(err, result){
-            if (err) throw err;
-            console.log("Number of ratings deleted: " + result.affectedRows);
-            return result.affectedRows;
+    deleteRating(personID, playlistID){
+        return new Promise(function(resolve, reject){
+            let query = "DELETE FROM rating WHERE personID = ? AND playlistID = ?;";
+                
+            DBConn.query(query, [personID, playlistID])
+            .then(function(result){
+                resolve(result.affectedRows);
+            })
+            .catch(function(err){
+                reject(err);
+            });
         });
     }
 }
