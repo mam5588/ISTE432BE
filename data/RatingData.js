@@ -5,7 +5,7 @@ module.exports = {
 
     /**
      * Find all ratings by playlist ID
-     * @param {String} playlistID ID of playlist to sort by
+     * @param {String} playlistID ID of playlist to search by
      */
     getAllRatings(playlistID){
         return new Promise(function(resolve, reject){
@@ -30,7 +30,7 @@ module.exports = {
     /**
      * Find average of ratings by playlist ID
      * Null if no result
-     * @param {String} playlistID ID of playlist to sort by
+     * @param {String} playlistID ID of playlist to search by
      */
     getAverageRating(playlistID){
         return new Promise(function(resolve, reject){
@@ -97,8 +97,9 @@ module.exports = {
     },
 
     /**
-     * Deletes an existing rating by ID
-     * @param {int} ratingID ID of rating to remove
+     * Delete a rating by person ID and playlist ID
+     * @param {String} personID ID of person who owns rating to delete
+     * @param {String} playlistID ID of playlist rating is being deleted from
      */
     deleteRating(personID, playlistID){
         return new Promise(function(resolve, reject){

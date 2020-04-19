@@ -123,8 +123,9 @@ var addRating = function(personID, playlistID, rating){
 }
 
 /**
- * Delete an existing rating by rating ID
- * @param {int} ratingID ID of rating to delete
+ * Delete a rating by person ID and playlist ID
+ * @param {String} personID ID of person who owns rating to be deleted
+ * @param {String} playlistID ID of playlist rating is being deleted from
  */
 var deleteRating = function(personID, playlistID){
   return new Promise(function(resolve, reject){
@@ -144,7 +145,7 @@ var deleteRating = function(personID, playlistID){
           return ErrorResponse;
         }
 
-        resolve([200, `{success: Successfully deleted ${affectedRows} ratings}`]);
+        resolve([200, `{success: Successfully deleted ${affectedRows} rating}`]);
       })
     })
     .catch(function(err){
