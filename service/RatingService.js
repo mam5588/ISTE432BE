@@ -22,39 +22,41 @@ router.get('/rating/average', (req, res) => {
  * Get a specific person's rating of a playlist
  */
 router.get('/rating', (req, res) => {
-    let responseInfo = ratingBusiness.getRating(
-        req.query.personID,
-        req.query.playlistID
-    );
-
-    res.statusCode = responseInfo[0];
-    res.json(responseInfo[1]);
+    ratingBusiness.getRating(
+            req.query.personID,
+            req.query.playlistID
+            )
+    .then(function(responseInfo){    
+        res.statusCode = responseInfo[0];
+        res.json(responseInfo[1]);
+    });
 });
 
 /**
  * Add a rating for a playlist
  */
 router.post('/rating', (req, res) => {
-    let responseInfo = ratingBusiness.addRating(
+    ratingBusiness.addRating(
         req.body.personID,
         req.body.playlistID,
         req.body.rating
-      );
-
-      res.statusCode = responseInfo[0];
-      res.json(responseInfo[1]);
+    ).then(function(responseInfo){
+        res.statusCode = responseInfo[0];
+        res.json(responseInfo[1]);
+    });
 });
 
 /**
  * Add a rating for a playlist
  */
 router.delete('/rating', (req, res) => {
-    let responseInfo = ratingBusiness.deleteRating(
-        req.body.ratingID
-      );
-
-      res.statusCode = responseInfo[0];
-      res.json(responseInfo[1]);
+    ratingBusiness.deleteRating(
+        req.body.personID,
+        req.body.playlistID
+    ).then(function(responseInfo){
+        res.statusCode = responseInfo[0];
+        res.json(responseInfo[1]);
+    });
 });
 
 module.exports = router;

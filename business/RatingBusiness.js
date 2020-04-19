@@ -13,39 +13,17 @@ module.exports = {
       //TODO check that playlist exists when sybsystem is implemented
 
       ratingData.getAverageRating(playlistID)
-      .then(function(results){
-        let average = results[0].rating;
-        console.log("Business layer value: " + average);
+      .then(function(rating){
 
-        if(average == null){
+        if(rating == null){
           resolve( [404, "No ratings exist for this playlist."]);
         }
     
-        resolve( [200, average]);
+        resolve([200, rating]);
       })
       .catch(function(err){
         resolve([500, err.message]);
       })
-    });
-    
-    //Parameter validation      
-    //TODO check that playlist exists when sybsystem is implemented
-
-    return new Promise(function(resolve, reject){
-        ratingData.getAverageRating(playlistID)
-        .then(function(results){
-          let average = results;
-          console.log("Business layer value: " + average);
-
-          if(average == null){
-            return [404, "No ratings exist for this playlist."];
-          }
-      
-          return [200, average];
-        })
-        .catch(function(err){
-          return [500, err.message];
-        })
     });
   },
 
@@ -55,22 +33,24 @@ module.exports = {
    * @param {String} personID ID of person to search by
    */
   getRating(personID, playlistID){
-    try{
-      //Parameter validation
-      //TODO check that person and playlist exist when subsystems are active
 
-      let rating = ratingData.getRating(personID, playlistID);
-        
-      //Data validation
-      if(rating == null){
-        resolve([404, "This person does not have a rating for this playlist."]);
-      }
+    return new Promise(function(resolve, reject){
+      //Parameter validation      
+      //TODO check that playlist exists when sybsystem is implemented
 
-      resolve([200, rating]);
-    }
-    catch(err){
-      resolve([500, "Sorry, we could not service your request at this time."]);
-    }
+      ratingData.getRating(personID, playlistID)
+      .then(function(rating){
+
+        if(rating == null){
+          resolve( [404, "This user has no rating for this playlist."]);
+        }
+    
+        resolve([200, rating]);
+      })
+      .catch(function(err){
+        resolve([500, err.message]);
+      })
+    });
   },
 
   /**

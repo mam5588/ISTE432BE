@@ -10,18 +10,19 @@ module.exports = {
      */
     getAverageRating(playlistID){
         return new Promise(function(resolve, reject){
-            let conn = DBConn.getConnection();
-            conn.connect(function(err){
-                if(err) reject(err);
 
-                let sql = "SELECT AVG(rating) AS rating FROM rating WHERE playlistID = ?;";
-                conn.query(sql, [playlistID], function(err, result){
-                    if(err) reject(err);
-                    console.log("Data layer: " + result[0].rating);
-        
-                    conn.end();
-                    resolve(result);
-                });
+            let rating = null;
+            let sql = "SELECT AVG(rating) AS rating, playlistID, createdDate, lastUpdatedDate FROM rating WHERE playlistID = ?;";
+            DBConn.query(sql, [playlistID])
+            .then(function(result){
+                if(rating != null){
+                    result = result[0];
+                    rating = new Rating(result.rating, null, result.playlistID, result.createdDate, result.lastUpdatedDate);
+                }
+                resolve(rating);
+            })
+            .catch(function(err){
+                throw err;
             });
         });
     },
@@ -33,18 +34,22 @@ module.exports = {
      * @param {String} playlistID  ID of playlist to search by
      */
     getRating(personID, playlistID){
-        let rating = null;
-        let sql = "SELECT rating " + 
-                    "FROM rating " + 
-                    "WHERE playlistID = " + playlistID + " " +
-                    "AND personID = " + personID + ";";
-        let conn = new sql.Request();
-        conn.query(sql, function(err, result){
-            if (err) throw err;
-            rating = result["rating"];
-        });
+        return new Promise(function(resolve, reject){
 
-        return rating;
+            let rating = null;
+            let sql = "SELECT * FROM rating WHERE playlistID = ? AND personID = ?;";
+            DBConn.query(sql, [playlistID, personID])
+            .then(function(result){
+                if(result.length != 0){
+                    result = result[0];
+                    rating = new Rating(result.rating, result.personID, result.playlistID, result.createdDate, result.lastUpdatedDate);
+                }
+                resolve(rating);
+            })
+            .catch(function(err){
+                throw err;
+            });
+        });
     },
 
     /**
