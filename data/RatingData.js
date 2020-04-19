@@ -4,6 +4,30 @@ const Rating = require('../util/Rating.js');
 module.exports = {
 
     /**
+     * Find all ratings by playlist ID
+     * @param {String} playlistID ID of playlist to sort by
+     */
+    getAllRatings(playlistID){
+        return new Promise(function(resolve, reject){
+
+            let ratingList = [];
+            let query = "SELECT * FROM rating WHERE playlistID = ?;";
+            DBConn.query(query, [playlistID])
+            .then(function(result){
+                if(result.length != 0){
+                    result.forEach(function(row){
+                        ratingList.push(new Rating(row.rating, row.personID, row.playlistID, row.createdDate, row.lastUpdatedDate));
+                    });
+                }
+                resolve(ratingList);
+            })
+            .catch(function(err){
+                reject(err);
+            });
+        });
+    },
+
+    /**
      * Find average of ratings by playlist ID
      * Null if no result
      * @param {String} playlistID ID of playlist to sort by

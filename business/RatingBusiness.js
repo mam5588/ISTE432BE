@@ -2,6 +2,27 @@ const ratingData = require('../data/RatingData.js');
 const ErrorResponse = [500, "Sorry, we could not service your request at this time."];
 
 /**
+ * Get all ratings for a playlist
+ * @param {String} playlistID ID of playlist to search by
+ */
+var getAllRatings = function(playlistID){
+
+  return new Promise(function(resolve, reject){
+    //Parameter validation      
+    //TODO check that playlist exists when sybsystem is implemented
+
+    ratingData.getAllRatings(playlistID)
+    .then(function(ratingList){
+  
+      resolve([200, ratingList]);
+    })
+    .catch(function(err){
+      return ErrorResponse;
+    })
+  });
+}
+
+/**
  * Get average rating for a playlist
  * @param {String} playlistID ID of playlist to search by
  */
@@ -136,6 +157,7 @@ var deleteRating = function(personID, playlistID){
 }
 
   module.exports = {
+    getAllRatings,
     getAverageRating,
     getRating,
     addRating,
