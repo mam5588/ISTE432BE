@@ -1,15 +1,17 @@
 const mysql = require( 'mysql' );
 
-module.exports = {
-    query(sql, params){
-        return new Promise(function(resolve, reject){
+    var getConnection = function(){
+        return mysql.createConnection({
+            host: 'localhost',
+            user: 'root',
+            password: 'password',
+            database: 'audiocracy'
+        });
+    }
 
-            let conn = mysql.createConnection({
-                host: 'localhost',
-                user: 'root',
-                password: 'password',
-                database: 'audiocracy'
-            });
+    var query = function(sql, params){
+        return new Promise(function(resolve, reject){
+            let conn = getConnection();
 
             conn.connect(function(err){
                 if(err) throw err;
@@ -34,4 +36,7 @@ module.exports = {
             });
         });
     }
+module.exports = {
+    getConnection,
+    query
 };
