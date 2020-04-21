@@ -79,9 +79,13 @@ var addComment = function(personID, playlistID, comment){
     //Parameter validation
     let errorString = null;
 
-    if ( comment.length < 1 || comment.length > 140){
+    if(comment == null){
+      errorString = "Comments cannot be null.";
+    }
+    else if ( comment.length < 1 || comment.length > 140){
       errorString = "Comments be between 0 and 140 characters.";
     }
+    
     if( errorString != null){
       resolve([400, errorString]);
     }

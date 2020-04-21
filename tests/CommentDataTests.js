@@ -1,4 +1,4 @@
-const commentBusiness = require('../business/commentBusiness.js');
+
 const commentData = require('../data/commentData.js');
 
 function testGetAllCommentsByPlaylist(){
@@ -70,3 +70,21 @@ function testGetComment(){
     console.log("Test Fail");
   }
 }
+
+function testInsertComment(){
+  var today = new Date();
+  commentData.addComment("reviewer1ID", "adminPlaylist1ID", "This song is awful!!!", today, today)
+  .then(function(result){
+    if(result == 1){
+      console.log("Test Pass");
+    }
+    else{
+      console.log("Test Fail");
+    }
+  });
+}
+
+testGetAllCommentsByPlaylist();
+testGetPlaylistCommentsByUser();
+testGetComment();
+testInsertComment();

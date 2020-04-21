@@ -14,11 +14,9 @@ module.exports = {
             let query = "SELECT * FROM rating WHERE playlistID = ?;";
             DBConn.query(query, [playlistID])
             .then(function(result){
-                if(result.length != 0){
-                    result.forEach(function(row){
-                        ratingList.push(new Rating(row.rating, row.personID, row.playlistID, row.createdDate, row.lastUpdatedDate));
-                    });
-                }
+                result.forEach(function(row){
+                    ratingList.push(new Rating(row.rating, row.personID, row.playlistID, row.createdDate, row.lastUpdatedDate));
+                });
                 resolve(ratingList);
             })
             .catch(function(err){
@@ -39,8 +37,8 @@ module.exports = {
             DBConn.query(query, [playlistID])
             .then(function(result){
                 if(result[0].rating != null){
-                    result = result[0];
-                    rating = new Rating(result.rating, null, result.playlistID, result.createdDate, result.lastUpdatedDate);
+                    row = result[0];
+                    rating = new Rating(row.rating, null, row.playlistID, row.createdDate, row.lastUpdatedDate);
                 }
                 resolve(rating);
             })
