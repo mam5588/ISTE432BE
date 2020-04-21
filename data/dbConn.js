@@ -15,11 +15,11 @@ module.exports = {
                 if(err) throw err;
 
                 if(params != undefined){
-                    
+
                     conn.query(sql, params, function(err, result){
                         if(err) reject(err);
                         conn.end();
-        
+
                         resolve(result);
                     });
                 }
@@ -27,7 +27,7 @@ module.exports = {
                     conn.query(sql, function(err, result){
                         if(err) reject(err);
                         conn.end();
-        
+
                         resolve(result);
                     });
                 }

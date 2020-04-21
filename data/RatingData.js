@@ -34,7 +34,6 @@ module.exports = {
      */
     getAverageRating(playlistID){
         return new Promise(function(resolve, reject){
-
             let rating = null;
             let query = "SELECT AVG(rating) AS rating, playlistID, createdDate, lastUpdatedDate FROM rating WHERE playlistID = ?;";
             DBConn.query(query, [playlistID])
@@ -79,13 +78,13 @@ module.exports = {
     /**
      * Insert a new rating for a specific person and playlist
      * @param {String} personID ID of person who submitted playlist
-     * @param {String} playlistID ID of playlist rating is for 
+     * @param {String} playlistID ID of playlist rating is for
      * @param {int} rating Rating value to insert
      */
     addRating(personID, playlistID, rating, createdDate, lastUpdatedDate){
         return new Promise(function(resolve, reject){
             let query = "INSERT INTO rating (personID, playlistID, rating, createdDate, lastUpdatedDate) VALUES (?, ?, ?, ?, ?);";
-            
+
             DBConn.query(query, [personID, playlistID, rating, createdDate, lastUpdatedDate])
             .then(function(result){
                 resolve(result.affectedRows);
@@ -104,7 +103,7 @@ module.exports = {
     deleteRating(personID, playlistID){
         return new Promise(function(resolve, reject){
             let query = "DELETE FROM rating WHERE personID = ? AND playlistID = ?;";
-                
+
             DBConn.query(query, [personID, playlistID])
             .then(function(result){
                 resolve(result.affectedRows);
