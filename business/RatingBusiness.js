@@ -93,7 +93,7 @@ let addRating = function(personID, playlistID, rating){
     }
 
     if( errorString != null){
-      return [400, errorString];
+      resolve([400, errorString]);
     }
     //TODO check that playlist exists when sybsystem is implemented
     //TODO check that person exists when sybsystem is implemented

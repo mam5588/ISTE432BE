@@ -6,39 +6,24 @@ const ratingData = require('../data/ratingData.js');
 function testGetAverageRating(){
   var playlistID = "adminPlaylist1ID";
   var result = ratingData.getAverageRating(playlistID);
-  //var expResult =
-  if(result = expResult){
-    console.log("Test pass");
+
+  if(result != null){
+    console.log("testGetAverageRating passed");
   }
   else{
-    console.log("Test fail");
+    console.log("testGetAverageRating failed");
   }
 }
 
 function testGetAllRatings(){
  var playlistID = "adminPlaylist1ID";
  var result = ratingData.getAllRatings(playlistID);
- var expResult = [
-     {
-         "rating": 5,
-         "personID": "reviewer1ID",
-         "playlistID": "adminPlaylist1ID",
-         "createdDate": "2020-04-20T19:22:26.000Z",
-         "lastUpdatedDate": "2020-04-20T19:22:26.000Z"
-     },
-     {
-         "rating": 1,
-         "personID": "reviewer2ID",
-         "playlistID": "adminPlaylist1ID",
-         "createdDate": "2020-04-03T18:46:16.000Z",
-         "lastUpdatedDate": "2020-04-03T18:46:16.000Z"
-     }
-    ]
-   if(result == expResult){
-     console.log("Test pass");
+ 
+   if(result != null){
+     console.log("testGetAllRatings passed");
    }
    else{
-     console.log("Test fail");
+     console.log("testGetAllRatings failed");
    }
 }
 
@@ -54,10 +39,10 @@ function testGetRating(){
     "lastUpdatedDate": "2020-04-20T19:22:26.000Z"
     }
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("testGetRating passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("testGetRating failed");
   }
 }
 
@@ -72,10 +57,10 @@ function insertRating(){
   var expResult = "{success: Successfully inserted 1 ratings}";
 
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("insertRating passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("insertRating failed");
   }
 }
 
@@ -84,14 +69,15 @@ function deleteRating(){
   var result = ratingData.deleteRating(personID);
   var expResult = "{success: Successfully deleted 1 rating}";
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("deleteRating passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("deleteRating failed");
   }
 }
-
 
 testGetAverageRating();
 testGetAllRatings();
 testGetRating();
+insertRating();
+deleteRating();

@@ -23,10 +23,10 @@ function testGetAllCommentsByPlaylist(){
     }
   ]
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("testGetAllCommentsByPlaylist Passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("testGetAllCommentsByPlaylist Failed");
   }
 }
 
@@ -45,10 +45,10 @@ function testGetPlaylistCommentsByUser(){
     }
   ]
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("testGetPlaylistCommentsByUser Passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("testGetPlaylistCommentsByUser Failed");
   }
 }
 
@@ -64,10 +64,10 @@ function testGetComment(){
     "lastUpdatedDate": "2020-04-03T18:46:16.000Z"
   }
   if(result = expResult){
-    console.log("Test Pass");
+    console.log("testGetComment Passed");
   }
   else{
-    console.log("Test Fail");
+    console.log("testGetComment Failed");
   }
 }
 
@@ -76,10 +76,10 @@ function testInsertComment(){
   commentData.addComment("reviewer1ID", "adminPlaylist1ID", "This song is awful!!!", today, today)
   .then(function(result){
     if(result == 1){
-      console.log("Test Pass");
+      console.log("testInsertComment Passed");
     }
     else{
-      console.log("Test Fail");
+      console.log("testInsertComment Failed");
     }
   });
 }
