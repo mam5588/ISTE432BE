@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const DBConn = require("../data/DBConn.js");
 
 router.use(express.json());
 router.use(express.urlencoded({extended:false}));

@@ -3,28 +3,26 @@ const assert = require("assert");
 
 
 function testConnect(){
+    console.log("testConnect");
     let conn = DBConn.getConnection();
+
     conn.connect(function(){
-        assert(conn.state == 'connected', "TestConnect failed: failed to connect to the datatbase");
+        assert(conn.state == "connected", "\ttestConnect failed: connection not established successfully.");
     });
 }
 
 function testQuery(){
-    let conn = new DBConn();
-
-    conn.query("DESCRIBE person")
-        .then(result => {
-            if (err) throw err;
-            assert(result.length >= 1, "testQuery failed: No results returned.");
-        })
-        .catch(err =>{
-            console.log('testQuery failed: error in executing query.');
-
-        })
-        .finally(function(){
-            conn.close();
-        });
+    console.log("testQuery");
+    let query = "DESCRIBE person;";
+        
+    DBConn.query(query)
+    .then(function(result){
+        assert(result.length != 0, "\ttestQuery failed: no data was retrieved by the query.")
+    })
+    .catch(function(err){
+        reject(err);
+    });
 }
 
 testConnect();
-//testQuery();
+testQuery();
