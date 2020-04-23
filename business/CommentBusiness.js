@@ -1,4 +1,6 @@
 const commentData = require('../data/CommentData.js');
+const personBusiness = require('./PersonBusiness.js');
+
 const ErrorResponse = [500, "Sorry, we could not service your request at this time."];
 
 /**
@@ -33,14 +35,21 @@ var getUserComments = function(personID, playlistID){
     //Parameter validation      
     //TODO check that playlist exists when sybsystem is implemented
 
-    commentData.getUserComments(personID, playlistID)
-    .then(function(commentList){
-  
-      resolve([200, commentList]);
-    })
-    .catch(function(err){
-      return ErrorResponse;
-    })
+    personBusiness.getPersonByID(personID)
+    .then(function(result){
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
+        return;
+      }
+      commentData.getUserComments(personID, playlistID)
+      .then(function(commentList){
+    
+        resolve([200, commentList]);
+      })
+      .catch(function(err){
+        return ErrorResponse;
+      })
+    });
   });
 }
 
@@ -87,30 +96,35 @@ var addComment = function(personID, playlistID, comment){
     }
     
     if( errorString != null){
-      resolve([400, errorString]);
+      resolve([400, {"error": errorString}]);
     }
     
     //TODO check that playlist exists when sybsystem is implemented
-    //TODO check that person exists when sybsystem is implemented
 
-    let today = new Date();
-    commentData.addComment(personID, playlistID, comment, today, today)
-    .then(function(affectedRows){
-      if(affectedRows == 0){
-        return ErrorResponse;
+    personBusiness.getPersonByID(personID)
+    .then(function(result){
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
+        return;
       }
-      resolve([200, `{success: Successfully inserted ${affectedRows} comments}`]);
-    })
-    .catch(function(err){
-      return ErrorResponse;
+      let today = new Date();
+      commentData.addComment(personID, playlistID, comment, today, today)
+      .then(function(affectedRows){
+        if(affectedRows == 0){
+          return ErrorResponse;
+        }
+        resolve([200, {"success": `Successfully inserted ${affectedRows} comments`}]);
+      })
+      .catch(function(err){
+        return ErrorResponse;
+      });
     });
   });
 }
 
 /**
  * Delete a comment by person ID and playlist ID
- * @param {String} personID ID of person who owns comment to delete
- * @param {String} playlistID ID of playlist comment is being deleted from
+ * @param {String} commentID ID of comment being deleted from
  */
 var deleteComment = function(commentID){
   return new Promise(function(resolve, reject){
@@ -118,8 +132,8 @@ var deleteComment = function(commentID){
     //Further business logic
     getComment(commentID)
     .then(function(response){
-      if(response[0] == 404){
-        resolve(response);
+      if(response[0] != 200){
+        resolve(result[0], result[1]);
       }
       //TODO check that playlist exists when sybsystem is implemented
       //TODO check that person exists when sybsystem is implemented
@@ -130,7 +144,7 @@ var deleteComment = function(commentID){
           return ErrorResponse;
         }
 
-        resolve([200, `{success: Successfully deleted ${affectedRows} comment}`]);
+        resolve([200, {"success": "Successfully deleted ${affectedRows} comment"}]);
       })
     })
     .catch(function(err){

@@ -1,5 +1,7 @@
 const ratingData = require('../data/RatingData.js');
-const ErrorMessage = `{error:Sorry, could not process your request right now.}`;
+const personBusiness = require('./PersonBusiness.js');
+
+const ErrorMessage = [500, {"error":"Sorry, could not process your request right now."}];
 
 /**
  * Get all ratings for a playlist
@@ -16,7 +18,7 @@ let getAllRatings = function(playlistID){
       resolve([200, results]);
     })
     .catch(function(err){
-      resolve([500, ErrorMessage]);
+      resolve(ErrorMessage);
     })
   });
 }
@@ -35,14 +37,14 @@ let getAverageRating = function(playlistID){
     .then(function(average){
 
       if(average == null){
-        resolve([404, `{error: No ratings exist for this playlist.}`]);
+        resolve([404, {"error": "No ratings exist for this playlist."}]);
         return;
       }
 
       resolve([200, average]);
     })
     .catch(function(err){
-      resolve([500, ErrorMessage]);
+      resolve(ErrorMessage);
     })
   });
 }
@@ -55,21 +57,27 @@ let getAverageRating = function(playlistID){
 let getRating = function(personID, playlistID){
   return new Promise(function(resolve, reject){
     //Parameter validation
-    //TODO check that person and playlist exist when subsystems are active
-
-    ratingData.getRating(personID, playlistID)
-    .then(function(rating){
-
-      //Data validation
-      if(rating == null){
-        resolve([404, `{error: This person does not have a rating for this playlist.}`]);
+    //TODO check that playlist exist when subsystems are active
+    personBusiness.getPersonByID(personID)
+    .then(function(result){
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
         return;
       }
-
-      resolve([200, rating]);
-    })
-    .catch(function(err){
-      resolve([500, ErrorMessage])
+      ratingData.getRating(personID, playlistID)
+      .then(function(rating){
+  
+        //Data validation
+        if(rating == null){
+          resolve([404, {"error": "This person does not have a rating for this playlist."}]);
+          return;
+        }
+  
+        resolve([200, rating]);
+      })
+      .catch(function(err){
+        resolve(ErrorMessage)
+      });
     });
   });
 }
@@ -86,36 +94,42 @@ let addRating = function(personID, playlistID, rating){
     let errorString = null;
 
     if( rating == undefined || isNaN(rating) ){
-      errorString = `{error: Rating must be an integer.]}`;
+      errorString = "Rating must be an integer.";
     }
     else if ( rating < 1 || rating > 5){
-      errorString = `{error: Rating must be between 1 and 5.]}`;
+      errorString = "Rating must be between 1 and 5.";
     }
 
     if( errorString != null){
-      resolve([400, errorString]);
+      resolve([400, {"error": errorString}]);
     }
     //TODO check that playlist exists when sybsystem is implemented
-    //TODO check that person exists when sybsystem is implemented
 
-    //Further business logic
-    getRating(personID, playlistID)
+    personBusiness.getPersonByID(personID)
     .then(function(result){
-      if(result[0] != 404){
-        resolve([409, `{error: This user has already submitted a rating for this playlist}`]);
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
         return;
       }
-    
-      ratingData.addRating(personID, playlistID, rating)
-      .then(function(affectedRows){
-        if(affectedRows == 0){
-          resolve([400, ErrorMessage]);
+      //Further business logic
+      getRating(personID, playlistID)
+      .then(function(result){
+        if(result[0] != 404){
+          resolve([409, {"error": "This user has already submitted a rating for this playlist"}]);
           return;
         }
-        resolve([200, `{success: inserted ${affectedRows} comments}`]);
-      })
-      .catch(function(err){
-        resolve([500, ErrorMessage]);
+      
+        ratingData.addRating(personID, playlistID, rating)
+        .then(function(affectedRows){
+          if(affectedRows == 0){
+            resolve(ErrorMessage);
+            return;
+          }
+          resolve([200, {"success": `inserted ${affectedRows} comments`}]);
+        })
+        .catch(function(err){
+          resolve(ErrorMessage);
+        });
       });
     });
   });
@@ -127,27 +141,34 @@ let addRating = function(personID, playlistID, rating){
  */
 let deleteRating = function(personID, playlistID){
   return new Promise(function(resolve, reject){
-    //TODO check that playlist exists when sybsystem is implemented
-    //TODO check that person exists when sybsystem is implemented
 
-    //Further business logic
-    getRating(personID, playlistID)
+    personBusiness.getPersonByID(personID)
     .then(function(result){
-      if(result[1] == 404){
-        resolve([404, `{error: This user does not have a rating for this playlist.}`]);
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
         return;
       }
-    
-      ratingData.deleteRating(personID, playlistID)
-      .then(function(affectedRows){
-        if(affectedRows == 0){
-          resolve([400, ErrorMessage]);
+    //TODO check that playlist exists when sybsystem is implemented
+
+      //Further business logic
+      getRating(personID, playlistID)
+      .then(function(result){
+        if(result[0] != 200){
+          resolve([result[0], result[1]]);
           return;
         }
-        resolve([200, `{success: deleted ${affectedRows} comments}`]);
-      })
-      .catch(function(err){
-        resolve([500, ErrorMessage]);
+      
+        ratingData.deleteRating(personID, playlistID)
+        .then(function(affectedRows){
+          if(affectedRows == 0){
+            resolve(ErrorMessage);
+            return;
+          }
+          resolve([200, {"success": `deleted ${affectedRows} comments`}]);
+        })
+        .catch(function(err){
+          resolve(ErrorMessage);
+        });
       });
     });
   });

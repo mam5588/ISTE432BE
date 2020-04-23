@@ -60,14 +60,19 @@ INSERT INTO rating (personID, playlistID, rating) VALUES ("reviewer2ID", "adminP
 
 
 ALTER TABLE playlist
-ADD FOREIGN KEY (personID) REFERENCES person(personID);
+    ADD FOREIGN KEY (personID) REFERENCES person(personID)
+    ON DELETE CASCADE;
 
 ALTER TABLE comment
-ADD FOREIGN KEY (personID) REFERENCES person(personID);
+    ADD FOREIGN KEY (personID) REFERENCES person(personID)
+    ON DELETE CASCADE;
 ALTER TABLE comment
-ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID);
+    ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID)
+    ON DELETE CASCADE;
 
 ALTER TABLE rating
-ADD FOREIGN KEY (personID) REFERENCES person(personID);
+    ADD FOREIGN KEY (personID) REFERENCES person(personID)
+    ON DELETE CASCADE;
 ALTER TABLE rating
-ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID);
+    ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID)
+    ON DELETE CASCADE;
