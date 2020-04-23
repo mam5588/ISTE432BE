@@ -54,7 +54,7 @@ function insertRating(){
   var lastUpdatedDate = "2020-04-20 02:03:45";
 
   var result = ratingData.addRating(personID, playlistID, rating, createdDate, lastUpdatedDate);
-  var expResult = "{success: Successfully inserted 1 ratings}";
+  var expResult = {"success": `Successfully inserted 1 ratings`}";
 
   if(result = expResult){
     console.log("insertRating passed");
@@ -67,7 +67,7 @@ function insertRating(){
 function deleteRating(){
   var personID = "reviewer3ID";
   var result = ratingData.deleteRating(personID);
-  var expResult = "{success: Successfully deleted 1 rating}";
+  var expResult = {"success": `Successfully deleted 1 rating`};
   if(result = expResult){
     console.log("deleteRating passed");
   }

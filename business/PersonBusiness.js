@@ -130,7 +130,7 @@ let deletePerson = function(personID){
             resolve(ErrorMessage);
           return;
         }
-        resolve([200, `{success: deleted ${affectedRows} user}`]);
+        resolve([200, {"success": `deleted ${affectedRows} user`}]);
       })
       .catch(function(err){
         resolve(ErrorMessage);
