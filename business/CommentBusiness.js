@@ -133,7 +133,7 @@ var deleteComment = function(commentID){
     getComment(commentID)
     .then(function(response){
       if(response[0] != 200){
-        resolve(result[0], result[1]);
+        resolve([result[0], result[1]]);
       }
       //TODO check that playlist exists when sybsystem is implemented
       //TODO check that person exists when sybsystem is implemented

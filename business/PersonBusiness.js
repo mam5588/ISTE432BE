@@ -112,17 +112,17 @@ let registerPerson = function(accessToken){
 let deletePerson = function(personID){
   return new Promise(function(resolve, reject){
     //Ensure that person exists in our system
-    getPerson(personID)
+    getPersonByID(personID)
     .then(function(result){
 
       //If issue with person retrieval, rethrow issue to service layer
-      if(result[1] != 200){
-        resolve(result[0], result[1]);
+      if(result[0] != 200){
+        resolve([result[0], result[1]]);
         return;
       }
     
       //Delete person from the database
-      personData.deletePerson(personID, playlistID)
+      personData.deletePerson(personID)
       .then(function(affectedRows){
 
         //If no rows are affected something went wrong
@@ -130,7 +130,7 @@ let deletePerson = function(personID){
             resolve(ErrorMessage);
           return;
         }
-        resolve([200, `{success: deleted ${affectedRows} comments}`]);
+        resolve([200, `{success: deleted ${affectedRows} user}`]);
       })
       .catch(function(err){
         resolve(ErrorMessage);
