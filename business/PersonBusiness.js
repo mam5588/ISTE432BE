@@ -87,8 +87,7 @@ let registerPerson = function(accessToken){
                 getPersonByID(personID)
                 .then(function(result){
                     if(result[0] == 200){
-                        //TODO: talk about if this is a success or a conflict exception
-                        resolve([409, "This person is already registered to our system."]);
+                        resolve([result[0], result[1]]);
                     }
                     
                     //Add person to database

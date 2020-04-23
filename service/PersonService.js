@@ -40,20 +40,9 @@ router.get('/person/name', (req, res) => {
 });
 
 /**
- * Get a person's information by personID
- */
-router.get('/person', (req, res) => {
-    personBusiness.getPerson(req.query.personID)
-    .then(function(responseInfo){    
-        res.statusCode = responseInfo[0];
-        res.json(responseInfo[1]);
-    });
-});
-
-/**
  * Register a new user to the system
  */
-router.post('/person/register', (req, res) => {
+router.post('/login', (req, res) => {
     personBusiness.registerPerson(req.body.accessToken)
     .then(function(responseInfo){    
         res.statusCode = responseInfo[0];
