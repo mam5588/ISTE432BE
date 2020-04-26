@@ -68,7 +68,3 @@ ALTER TABLE rating
 ALTER TABLE rating
     ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID)
     ON DELETE CASCADE;
-
-
-
-INSERT INTO playlist()
