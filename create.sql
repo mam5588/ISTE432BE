@@ -40,6 +40,18 @@ CREATE TABLE rating (
     CONSTRAINT rating_pk PRIMARY KEY (personID, playlistID)
 );
 
+INSERT INTO PERSON (personID, personName) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "Matt Marchinetti");
+
+INSERT INTO PLAYLIST (playlistID, personID, playlistName) VALUES ("1uxepaMSIq93jcUNLjrB4W", "22alke7dt3fxpeo6d5s7bmcxq", "Test");
+INSERT INTO PLAYLIST (playlistID, personID, playlistName) VALUES ("7e8ya7TWqCuG2hAZ6E6swa", "22alke7dt3fxpeo6d5s7bmcxq", "Classic Rock");
+INSERT INTO PLAYLIST (playlistID, personID, playlistName) VALUES ("7Hy5SpIzMFHbe6OFjTsq2i", "22alke7dt3fxpeo6d5s7bmcxq", "Stuff");
+
+INSERT INTO RATING (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", 5);
+INSERT INTO RATING (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", 5);
+
+INSERT INTO Comment (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Rocky movies are the best");
+INSERT INTO Comment (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Summer of 69 is the GOAT.");
+
 ALTER TABLE playlist
     ADD FOREIGN KEY (personID) REFERENCES person(personID)
     ON DELETE CASCADE;
@@ -57,3 +69,7 @@ ALTER TABLE rating
 ALTER TABLE rating
     ADD FOREIGN KEY (playlistID) REFERENCES playlist(playlistID)
     ON DELETE CASCADE;
+
+
+
+INSERT INTO playlist()
