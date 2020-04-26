@@ -48,8 +48,8 @@ INSERT INTO PLAYLIST (playlistID, personID, playlistName) VALUES ("7Hy5SpIzMFHbe
 
 INSERT INTO RATING (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", 5);
 
-INSERT INTO Comment (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Rocky movies are the best");
-INSERT INTO Comment (personID, playlistID, rating) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Summer of 69 is the GOAT.");
+INSERT INTO Comment (personID, playlistID, comment) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Rocky movies are the best");
+INSERT INTO Comment (personID, playlistID, comment) VALUES ("22alke7dt3fxpeo6d5s7bmcxq", "7e8ya7TWqCuG2hAZ6E6swa", "Summer of 69 is the GOAT.");
 
 ALTER TABLE playlist
     ADD FOREIGN KEY (personID) REFERENCES person(personID)
