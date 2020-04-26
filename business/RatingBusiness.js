@@ -126,9 +126,11 @@ let addRating = function(personID, playlistID, rating){
             return;
           }
           resolve([200, {"success": `inserted ${affectedRows} comments`}]);
+          return;
         })
         .catch(function(err){
           resolve(ErrorMessage);
+          return;
         });
       });
     });
@@ -165,9 +167,11 @@ let deleteRating = function(personID, playlistID){
             return;
           }
           resolve([200, {"success": `deleted ${affectedRows} comments`}]);
+          return;
         })
         .catch(function(err){
           resolve(ErrorMessage);
+          return;
         });
       });
     });

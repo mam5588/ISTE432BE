@@ -1,5 +1,5 @@
 const personData = require('../data/PersonData.js');
-const fetch = require("node-fetch");
+const spotify = require('./SpotifyProxy.js');
 
 const ErrorMessage = [500,{"error":"Sorry, could not process your request right now."}];
 
@@ -12,10 +12,12 @@ let getAllPeople = function(){
             personData.getAllPeople()
             .then(function(people){
                 resolve([200, people]);
+                return;
             })
         }
         catch(err){
             resolve(ErrorMessage);
+            return;
         }
   });
 }
@@ -28,6 +30,7 @@ let getPersonByID = function(personID){
     return new Promise(function(resolve, reject){
         if(personID == null || personID === ""){
             resolve([400, {"error": "PersonID must be a non-empty string."}]);
+            return;
         }
 
         try{
@@ -35,12 +38,15 @@ let getPersonByID = function(personID){
             .then(function(person){
                 if(person == null){
                     resolve([404, {"error": "No person with that personID is registered in our system."}]);
+                    return;
                 }
                 resolve([200, person]);
+                return;
             })
         }
         catch(err){
             resolve(ErrorMessage);
+            return;
         }
   });
 }
@@ -53,6 +59,7 @@ let getPersonByName = function(personName){
     return new Promise(function(resolve, reject){
         if(personName == null || personName === ""){
             resolve([400, {"error": "Person Name must be a non-empty string."}]);
+            return;
         }
 
         try{
@@ -60,12 +67,15 @@ let getPersonByName = function(personName){
             .then(function(person){
                 if(person == null){
                     resolve([404, {"error": "No person with that name is registered in our system."}]);
+                    return;
                 }
                 resolve([200, person]);
+                return;
             })
         }
         catch(err){
             resolve(ErrorMessage);
+            return;
         }
   });
 }
@@ -74,12 +84,11 @@ let getPersonByName = function(personName){
  * Insert a new person via the Spotify API
  * @param {String} accessToken Spotify API access token for new user
  */
-let registerPerson = function(accessToken){
+let login = function(accessToken){
     return new Promise(function(resolve, reject){
         try{
             //Call to Spotify API to retrieve user information
-           fetch("https://api.spotify.com/v1/me", {headers:{'Authorization': `Bearer ${accessToken}`}})
-            .then(response => response.json())
+            spotify.get("https://api.spotify.com/v1/me", accessToken)
             .then(function(responseJson){
                 let personID = responseJson.id;
 
@@ -88,18 +97,30 @@ let registerPerson = function(accessToken){
                 .then(function(result){
                     if(result[0] == 200){
                         resolve([result[0], result[1]]);
+                        return;
                     }
+
+                    let personName = responseJson.display_name;
                     
                     //Add person to database
-                    personData.addPerson(personID, personName, today, today)
+                    personData.addPerson(personID, personName, new Date())
                     .then(function(affectedRows){
-                        resolve([200, {"success": `successfully added ${affectedRows} users`}]);
+
+                        //Return 200 with logged in user information
+                        getPersonByID(personID)
+                        .then(function(result){
+                            if(result[0] == 200){
+                                resolve([result[0], result[1]]);
+                                return;
+                            }
+                        });
                     })
                 })
             });
         }
         catch(err){
             resolve(ErrorMessage);
+            return;
         }
   });
 }
@@ -133,6 +154,7 @@ let deletePerson = function(personID){
       })
       .catch(function(err){
         resolve(ErrorMessage);
+        return;
       });
     });
   });
@@ -142,6 +164,6 @@ module.exports = {
     getAllPeople,
     getPersonByID,
     getPersonByName,
-    registerPerson,
+    login,
     deletePerson
 };

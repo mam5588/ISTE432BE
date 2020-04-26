@@ -20,9 +20,11 @@ module.exports = {
                     });
                 }
                 resolve(commentList);
+                return;
             })
             .catch(function(err){
                 reject(err);
+                return;
             });
         });
     },
@@ -45,9 +47,11 @@ module.exports = {
                     });
                 }
                 resolve(commentList);
+                return;
             })
             .catch(function(err){
                 reject(err);
+                return;
             });
         });
     },
@@ -70,9 +74,11 @@ module.exports = {
                     comment = new Comment(row.commentID, row.comment, row.personID, row.playlistID, row.createdDate, row.lastUpdatedDate);
                 }
                 resolve(comment);
+                return;
             })
             .catch(function(err){
                 reject(err);
+                return;
             });
         });
     },
@@ -90,9 +96,11 @@ module.exports = {
             DBConn.query(query, [comment, personID, playlistID, createdDate, lastUpdatedDate])
             .then(function(result){
                 resolve(result.affectedRows);
+                return;
             })
             .catch(function(err){
                 reject(err);
+                return;
             });
         });
     },
@@ -108,9 +116,11 @@ module.exports = {
             DBConn.query(query, [commentID])
             .then(function(result){
                 resolve(result.affectedRows);
+                return;
             })
             .catch(function(err){
                 reject(err);
+                return;
             });
         });
     }

@@ -43,7 +43,7 @@ router.get('/person/name', (req, res) => {
  * Register a new user to the system
  */
 router.post('/login', (req, res) => {
-    personBusiness.registerPerson(req.body.accessToken)
+    personBusiness.login(req.header("authorization"))
     .then(function(responseInfo){    
         res.statusCode = responseInfo[0];
         res.json(responseInfo[1]);

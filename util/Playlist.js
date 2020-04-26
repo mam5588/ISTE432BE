@@ -1,9 +1,8 @@
 class Playlist {
-    constructor(playlistID, personID, createdDate, lastUpdatedDate) {
+    constructor(playlistID, personID, playlistName) {
         this.playlistID = playlistID;
         this.personID = personID;
-        this.createdDate = createdDate;
-        this.lastUpdatedDate = lastUpdatedDate;
+        this.playlistName = playlistName;
     }
 }
 

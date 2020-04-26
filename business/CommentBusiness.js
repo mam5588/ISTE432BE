@@ -17,6 +17,7 @@ var getPlaylistComments = function(playlistID){
     .then(function(commentList){
   
       resolve([200, commentList]);
+      return;
     })
     .catch(function(err){
       return ErrorResponse;
@@ -45,6 +46,7 @@ var getUserComments = function(personID, playlistID){
       .then(function(commentList){
     
         resolve([200, commentList]);
+        return;
       })
       .catch(function(err){
         return ErrorResponse;
@@ -67,12 +69,15 @@ var getComment = function(commentID){
     .then(function(comment){
       if(comment == null){
         resolve([404, `no comment with commentID ${commentID} exists`])
+        return;
       }
   
       resolve([200, comment]);
+      return;
     })
     .catch(function(err){
-      return ErrorResponse;
+      resolve(ErrorResponse);
+      return;
     })
   });
 }
@@ -97,6 +102,7 @@ var addComment = function(personID, playlistID, comment){
     
     if( errorString != null){
       resolve([400, {"error": errorString}]);
+      return;
     }
     
     //TODO check that playlist exists when sybsystem is implemented
@@ -111,12 +117,15 @@ var addComment = function(personID, playlistID, comment){
       commentData.addComment(personID, playlistID, comment, today, today)
       .then(function(affectedRows){
         if(affectedRows == 0){
-          return ErrorResponse;
+          resolve(ErrorResponse);
+          return;
         }
         resolve([200, {"success": `Successfully inserted ${affectedRows} comments`}]);
+        return;
       })
       .catch(function(err){
-        return ErrorResponse;
+        resolve(ErrorResponse);
+        return;
       });
     });
   });
@@ -134,6 +143,7 @@ var deleteComment = function(commentID){
     .then(function(response){
       if(response[0] != 200){
         resolve([result[0], result[1]]);
+        return;
       }
       //TODO check that playlist exists when sybsystem is implemented
       //TODO check that person exists when sybsystem is implemented
@@ -141,18 +151,22 @@ var deleteComment = function(commentID){
       commentData.deleteComment(commentID)
       .then(function(affectedRows){
         if(affectedRows == 0){
-          return ErrorResponse;
+          resolve(ErrorResponse);
+          return;
         }
 
         resolve([200, {"success": "Successfully deleted ${affectedRows} comment"}]);
+        return;
       })
     })
     .catch(function(err){
-      return ErrorResponse;
+      resolve(ErrorResponse);
+      return;
     });
   })
   .catch(function(err){
-    return ErrorResponse;
+    resolve(ErrorResponse);
+    return;
   });
 }
 

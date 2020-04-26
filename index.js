@@ -13,10 +13,12 @@ const hostname = '/audiocracy';
 
 //Import and set routes for subsystems
 const personRoutes = require('./service/PersonService.js');
+const playlistRoutes = require('./service/PlaylistService.js');
 const commentRoutes = require('./service/CommentService.js');
 const ratingRoutes = require('./service/RatingService.js');
 
 router.use(hostname, personRoutes);
+router.use(hostname, playlistRoutes);
 router.use(hostname, commentRoutes);
 router.use(hostname, ratingRoutes);
 

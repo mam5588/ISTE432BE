@@ -14,7 +14,7 @@ module.exports = {
             DBConn.query(query)
             .then(function(result){
                 result.forEach(function(row){
-                    personList.push(new Person(row.personID, row.personName, row.createdDate, row.lastUpdatedDate));
+                    personList.push(new Person(row.personID, row.personName, row.createdDate));
                 });
                 resolve(personList);
             })
@@ -38,7 +38,7 @@ module.exports = {
             .then(function(result){
                 if(result.length != 0){
                     row = result[0];
-                    person = new Person(row.personID, row.personName, row.createdDate, row.lastUpdatedDate);
+                    person = new Person(row.personID, row.personName, row.createdDate);
                 }
                 resolve(person);
             })
@@ -62,7 +62,7 @@ module.exports = {
             .then(function(result){
                 if(result.length != 0){
                     row = result[0];
-                    person = new Person(row.personID, row.personName, row.createdDate, row.lastUpdatedDate);
+                    person = new Person(row.personID, row.personName, row.createdDate);
                 }
                 resolve(person);
             })
@@ -77,13 +77,12 @@ module.exports = {
      * @param {String} personID ID of person
      * @param {String} personName name of person
      * @param {String} createdDate the date on which the person was created
-     * @param {String} lastUpdatedDate the date on which the person was last updated
      */
-    addPerson(personID, personName, createdDate, lastUpdatedDate){
+    addPerson(personID, personName, createdDate){
         return new Promise(function(resolve, reject){
-            let query = "INSERT INTO person (personID, personName, createdDate, lastUpdatedDate) VALUES (?, ?, ?, ?);";
+            let query = "INSERT INTO person (personID, personName) VALUES (?, ?, ?);";
 
-            DBConn.query(query, [personID, personName, createdDate, lastUpdatedDate])
+            DBConn.query(query, [personID, personName, createdDate])
             .then(function(result){
                 resolve(result.affectedRows);
             })

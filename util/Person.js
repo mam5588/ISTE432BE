@@ -1,9 +1,8 @@
 class Person {
-    constructor(personID, personName, createdDate, lastUpdatedDate) {
+    constructor(personID, personName, createdDate) {
         this.personID = personID;
         this.personName = personName;
         this.createdDate = createdDate;
-        this.lastUpdatedDate = lastUpdatedDate;
     }
 }
 
