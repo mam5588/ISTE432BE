@@ -108,11 +108,6 @@ let getPlaylist = function(playlistID, accessToken){
             }
             playlistData.getPlaylist(playlistID)
             .then(function(playlist){
-                if(playlist == null){
-                    resolve([404, "This playlist does not exist in our system."]);
-                    return;
-                }
-                
                 spotify.get(`https://api.spotify.com/v1/playlists/${playlistID}`, accessToken)
                 .then(function(responseJson){
                         populatePlaylist(responseJson.id, accessToken)
@@ -155,22 +150,24 @@ let addPlaylist = function(playlistID, accessToken){
         }
 
         playlistData.getPlaylist(playlistID)
-        .then(function(playlist){
-            if(playlist != null){
+        .then(function(internalPlaylist){
+            if(internalPlaylist != null){
                 resolve([409, {"error":"This playlist is already in our system."}]);
                 return;
             }
-
-            personBusiness.getPersonByID(playlist.personID).then(function(result){
-                if(result[0] != 200){
-                    resolve([result[0],result[1]]);
-                    return;
-                }
     
-                getPlaylist(playlistID, accessToken)
-                .then(function(response){
-                    playlist = response[1];
-                    playlistData.addPlaylist(playlist.playlistID, personID, playlist.name)
+            getPlaylist(playlistID, accessToken)
+            .then(function(response){
+                let playlist = response[1];
+
+                personBusiness.getPersonByID(playlist.personID)
+                .then(function(result){
+                    if(result[0] != 200){
+                        resolve([result[0], "The owner of this playlist is not in our system "]);
+                        return;
+                    }
+
+                    playlistData.addPlaylist(playlist.playlistID, playlist.personID, playlist.name)
                     .then(function(response){
                         resolve([200, playlist]);
                         return;
@@ -178,11 +175,11 @@ let addPlaylist = function(playlistID, accessToken){
                 })
                 .catch(function(err){
                     reject(err);
+                    return;
                 });
             })
             .catch(function(err){
-                resolve(ErrorMessage);
-                return;
+                reject(err);
             });
         })
         .catch(function(err){
