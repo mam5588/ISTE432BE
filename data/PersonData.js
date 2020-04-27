@@ -80,7 +80,7 @@ module.exports = {
      */
     addPerson(personID, personName, createdDate){
         return new Promise(function(resolve, reject){
-            let query = "INSERT INTO person (personID, personName) VALUES (?, ?, ?);";
+            let query = "INSERT INTO person (personID, personName, createdDate) VALUES (?, ?, ?);";
 
             DBConn.query(query, [personID, personName, createdDate])
             .then(function(result){

@@ -108,13 +108,11 @@ let getPlaylist = function(playlistID, accessToken){
             }
             playlistData.getPlaylist(playlistID)
             .then(function(playlist){
-                /*
-                TODO: discuss this issues
                 if(playlist == null){
                     resolve([404, "This playlist does not exist in our system."]);
                     return;
                 }
-                */
+                
                 spotify.get(`https://api.spotify.com/v1/playlists/${playlistID}`, accessToken)
                 .then(function(responseJson){
                         populatePlaylist(responseJson.id, accessToken)
@@ -141,6 +139,92 @@ let getPlaylist = function(playlistID, accessToken){
             return;
         }
   });
+}
+
+/**
+ * Add a new playlist from spotify for a user
+ * @param {String} playlistID ID of playlist to add
+ * @param {String} personID ID of person to add playlist to
+ * @param {String} accessToken Access token for validating with external API
+*/
+let addPlaylist = function(playlistID, accessToken){
+    return new Promise(function(resolve, reject){
+        if(playlistID === "" || playlistID == null){
+            resolve([400, {"error":"playlistID must be a non-empty string."}]);
+            return;
+        }
+
+        playlistData.getPlaylist(playlistID)
+        .then(function(playlist){
+            if(playlist != null){
+                resolve([409, {"error":"This playlist is already in our system."}]);
+                return;
+            }
+
+            personBusiness.getPersonByID(playlist.personID).then(function(result){
+                if(result[0] != 200){
+                    resolve([result[0],result[1]]);
+                    return;
+                }
+    
+                getPlaylist(playlistID, accessToken)
+                .then(function(response){
+                    playlist = response[1];
+                    playlistData.addPlaylist(playlist.playlistID, personID, playlist.name)
+                    .then(function(response){
+                        resolve([200, playlist]);
+                        return;
+                    });
+                })
+                .catch(function(err){
+                    reject(err);
+                });
+            })
+            .catch(function(err){
+                resolve(ErrorMessage);
+                return;
+            });
+        })
+        .catch(function(err){
+            resolve(ErrorMessage);
+            return;
+        });
+    });
+}
+
+/**
+ * Add a new playlist from spotify for a user
+ * @param {String} playlistID ID of playlist to add
+ * @param {String} accessToken Access token for validating with external API
+*/
+let deletePlaylist = function(playlistID, accessToken){
+    return new Promise(function(resolve, reject){
+        if(playlistID === "" || playlistID == null){
+            resolve([400, {"error":"playlistID must be a non-empty string."}]);
+            return;
+        }
+
+        playlistData.getPlaylist(playlistID)
+        .then(function(playlist){
+            if(playlist == null){
+                resolve([404, {"error":"No playlist with that ID exists in the system."}]);
+                return;
+            }
+
+            playlistData.deletePlaylist(playlistID)
+            .then(function(affectedRows){
+                resolve([200, {"success" : `Successfully deleted ${affectedRows} playlists`}]);
+            })
+            .catch(function(err){
+                resolve(ErrorMessage);
+                return;
+            });
+        })
+        .catch(function(err){
+            resolve(ErrorMessage);
+            return;
+        });
+    });
 }
 
 let parseSpotifyJson = async function(responseJson, accessToken){
@@ -220,5 +304,7 @@ let extractTracks = function(playlistJson, accessToken){
 module.exports = {
     getAllPlaylists,
     getMyPlaylists,
-    getPlaylist
+    getPlaylist,
+    addPlaylist,
+    deletePlaylist
 };
