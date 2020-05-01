@@ -125,7 +125,7 @@ let addRating = function(personID, playlistID, rating){
             resolve(ErrorMessage);
             return;
           }
-          resolve([200, {"success": `inserted ${affectedRows} comments`}]);
+          resolve([200, {"success": `inserted ${affectedRows} rating`}]);
           return;
         })
         .catch(function(err){
@@ -166,7 +166,7 @@ let deleteRating = function(personID, playlistID){
             resolve(ErrorMessage);
             return;
           }
-          resolve([200, {"success": `deleted ${affectedRows} comments`}]);
+          resolve([200, {"success": `deleted ${affectedRows} rating`}]);
           return;
         })
         .catch(function(err){
